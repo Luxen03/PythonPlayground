@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import pyforms
 from pyforms.controls import ControlButton
 from pyforms.controls import ControlImage
