@@ -6,6 +6,9 @@ import cv2
 import os
 import shutil
 
+from memory_profiler import profile
+import requests
+
 
 class Recognizer(pyforms.BaseWidget):
     def __init__(self):
@@ -17,6 +20,7 @@ class Recognizer(pyforms.BaseWidget):
         #memory
         self.identities = {}
         self.identityIndex = 0
+        self.isTrained = False
 
         #cameraControls
         self.image = ControlImage()
@@ -34,14 +38,16 @@ class Recognizer(pyforms.BaseWidget):
         self.nextButton.value = self.nextFunc
         self.trainButton = ControlButton("Start training!")
         self.trainButton.value = self.train
+        self.predButton = ControlButton("Start predicting!")
+        self.predButton.value = self.predict
         
         #structure
         self.formset = [{
-            "Camera" : ["image", "textBox", "camButton"],
+            "Camera" : ["image", "textBox", "camButton", "predButton"],
             "Library" : ["libImage", ("prevButton", "deleButton", "nextButton"), "trainButton"]
         }]
 
-
+    #@profile
     def start(self):
         #change button to take picture
         self.camButton.label = "Take Picture!"
@@ -54,6 +60,7 @@ class Recognizer(pyforms.BaseWidget):
             #self.image.value = self.model.predict(pic)[0].plot()
             cv2.waitKey(20)
 
+    #@profile
     def takePicture(self):
         #guard input
         name = self.textBox.value
@@ -98,8 +105,15 @@ class Recognizer(pyforms.BaseWidget):
             for image in self.identities[identity]:
                 cv2.imwrite(f"Datasets/{identity}/{i:03}.jpg", image)
                 i += 1
-        #PLACE FACE RECOG CODE HERE!!!
+        self.isTrained = True
+        #PLACE FACE TRAINING CODE HERE!!!
 
+        #PLACE FACE TRAINING CODE HERE!!!
+
+    def predict(self):
+        if (not self.isTrained): return
+        #PLACE FACE RECOG CODE HERE!!!
+ 
         #PLACE FACE RECOG CODE HERE!!!
 
 if __name__ == "__main__":
